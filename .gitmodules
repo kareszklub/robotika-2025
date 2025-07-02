@@ -1,0 +1,3 @@
+[submodule "bobot"]
+	path = bobot
+	url = https://github.com/magyarakoos/bobot.git
