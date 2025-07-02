@@ -1,3 +1,6 @@
 [submodule "bobot"]
 	path = bobot
 	url = https://github.com/magyarakoos/bobot.git
+[submodule "lessons/reveal.js"]
+	path = lessons/reveal.js
+	url = https://github.com/hakimel/reveal.js.git
