@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. óra</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="reveal.js/dist/theme/black.css" />
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <link rel="stylesheet" href="res/scrollbar.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Title -->
+            <section>
+                <h1 class="r-fit-text">Robotika 2. óra</h1>
+                <h2>2025</h2>
+            </section>
+
+            <!-- Servo -->
+            <section>
+                <h2>Servo</h2>
+                <p>TODO: servo wiring</p>
+            </section>
+
+            <!-- Classes #1 -->
+            <section data-auto-animate>
+                <h2>Programozási kitérő</h2>
+                <ul>
+                    <li class="fragment">mi van ha több van ugyanabból a perifériából?</li>
+                    <li data-id="copy" class="fragment">másoljuk le a kódot...</li>
+                </ul>
+            </section>
+
+            <!-- Classes #2 -->
+            <section data-auto-animate>
+                <h2>Programozási kitérő</h2>
+                <ul>
+                    <li>mi van ha több van ugyanabból a perifériából?</li>
+                    <li data-id="copy" style="text-decoration: line-through;">másoljuk le a kódot...</li>
+                </ul>
+            </section>
+
+            <!-- Classes #3 -->
+            <section data-auto-animate>
+                <h2>Programozási kitérő</h2>
+                <ul>
+                    <li>mi van ha több van ugyanabból a perifériából?</li>
+                    <li>csoportosítsuk ki közös részeket</li>
+                </ul>
+            </section>
+
+            <!-- Classes #4 -->
+            <section data-auto-animate>
+                <h2>Programozási kitérő</h2>
+                <h3>pin.h</h3>
+                <pre><code data-line-numbers="1|3|6-7|10|12-14|16|18-19|21|23|" class="hljs cpp" data-trim
+                        data-noescape>
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+
+                        class Pin {
+                        &#9;bool out;
+                        &#9;bool _value;
+
+                        public:
+                        &#9;uint pin;
+
+                        &#9;Pin(uint _pin, bool _out, bool _pull_up);
+                        &#9;Pin(uint _pin, bool _out);
+                        &#9;Pin(uint _pin);
+
+                        &#9;~Pin();
+
+                        &#9;void enable();
+                        &#9;void disable();
+
+                        &#9;bool value(bool __value = 0);
+
+                        &#9;void toggle();
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- Classes #5 -->
+            <section data-auto-animate>
+                <h2>Programozási kitérő</h2>
+                <h3>pin.cpp</h3>
+                <pre><code data-line-numbers="1-2|4-5|6|8-9|11-12|15|17|19-22|24-26|28-30|32-40|33|34|35-36|38|42-44|"
+                        class="hljs cpp" data-trim data-noescape>
+                        #include "pin.h"
+                        #include "pico/stdlib.h"
+
+                        Pin::Pin(uint _pin, bool _out, bool _pull_up)
+                        &#9;: pin(_pin), out(_out), _value(0) {
+                        &#9;enable();
+
+                        &#9;if (_out)
+                        &#9;&#9;value(_value);
+
+                        &#9;if (_pull_up)
+                        &#9;&#9;gpio_pull_up(pin);
+                        }
+
+                        Pin::Pin(uint _pin, bool _out) : Pin(_pin, _out, false) {}
+
+                        Pin::Pin(uint _pin) : Pin(_pin, GPIO_OUT) {}
+
+                        void Pin::enable() {
+                        &#9;gpio_init(pin);
+                        &#9;gpio_set_dir(pin, out);
+                        }
+
+                        void Pin::disable() {
+                        &#9;gpio_deinit(pin);
+                        }
+
+                        Pin::~Pin() {
+                        &#9;disable();
+                        }
+
+                        bool Pin::value(bool __value) {
+                        &#9;_value = __value;
+                        &#9;if (out) {
+                        &#9;&#9;gpio_put(pin, _value);
+                        &#9;&#9;return 0;
+                        &#9;} else {
+                        &#9;&#9;return gpio_get(pin);
+                        &#9;}
+                        }
+
+                        void Pin::toggle() {
+                        &#9;value(!_value);
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- config.h #1 -->
+            <section data-auto-animate data-auto-animate-id="cfg">
+                <h2>config.h</h2>
+                <p>Jó lenne ha a konfigurációt is ki lehetne csoportosítani...</p>
+            </section>
+
+            <!-- config.h #2 -->
+            <section data-auto-animate data-auto-animate-id="cfg">
+                <h2>config.h</h2>
+
+                <!-- TODO: update this when the config gets finalized -->
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+
+                        const uint BUZZER_PIN = 4;
+
+                        const uint BUTTON_PIN = 0;
+                        const uint BUTTON_DEBOUNCE_INTERVAL_US = 5e5;
+
+                        const uint ULTRA_TRIG_PIN = 20;
+                        const uint ULTRA_ECHO_PIN = 19;
+
+                        const uint HB_L1_PIN = 14;
+                        const uint HB_L2_PIN = 15;
+                        const uint HB_L_PWM = 10;
+                        const uint HB_R1_PIN = 22;
+                        const uint HB_R2_PIN = 11;
+                        const uint HB_R_PWM = 21;
+                        const uint HB_PWM_FREQ = 2000;
+
+                        const uint SERVO_PIN = 16;
+                        const float SERVO_MIN = 0.032f;
+                        const float SERVO_MID = 0.075f;
+                        const float SERVO_MAX = 0.130f;
+
+                        const uint RGB_SENSOR_SDA_PIN = 26;
+                        const uint RGB_SENSOR_SCL_PIN = 27;
+                        const uint RGB_SENSOR_CHAN = 1;
+                        const uint RGB_SENSOR_LED_PIN = 17;
+                        const uint RGB_SENSOR_INTEGRATION_TIME = 40;
+                        const uint RGB_SENSOR_GAIN = 3;
+
+                        const uint PROXY_PIN = 2;
+
+                        const uint ENC_LA = 6;
+                        const uint ENC_LB = 7;
+                        const uint ENC_RA = 8;
+                        const uint ENC_RB = 9;
+
+                    </code></pre>
+            </section>
+
+            <!-- Motorok -->
+            <section>
+                <h2>Motorok</h2>
+                <ul>
+                    <li class="fragment">áram ⇒ forgás
+                        <ul>
+                            <li class="fragment">fun fact: fordítva is működik</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">a forgás iránya az áram irányától függ</li>
+                    <li class="fragment">de hogy adunk neki több áramot mint amit a pico tud?</li>
+                    <li class="fragment">és hogy cseréljük meg a kábeleket menet közben???</li>
+                </ul>
+            </section>
+
+            <!-- H bridge #1 -->
+            <section data-auto-animate>
+                <h2>H bridge</h2>
+
+                <img src="static/02/h_bridge.svg" alt="H bridge">
+            </section>
+
+            <!-- H bridge #2 -->
+            <section data-auto-animate>
+                <h2>H bridge</h2>
+
+                <p>TODO: H bridge wiring</p>
+            </section>
+
+            <!-- H bridge #3 -->
+            <section data-auto-animate>
+                <h2>H bridge</h2>
+
+                <p>TODO: H bridge input values table</p>
+            </section>
+
+            <!-- H bridge #4 -->
+            <section data-auto-animate>
+                <h2>H bridge</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="" class="hljs cpp">
+
+                        TODO: add H bridge code when finalized
+                    </code>
+                </pre>
+            </section>
+
+            <!-- Ultra sensor #1 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+            </section>
+
+            <!-- Ultra sensor #2 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <img src="static/02/ultra_sensor_1.png" alt="ultra sensor 1">
+            </section>
+
+            <!-- Ultra sensor #3 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <img src="static/02/ultra_sensor_1.png" alt="ultra sensor 1">
+                <img src="static/02/ultra_sensor_2.png" alt="ultra sensor 2">
+            </section>
+
+            <!-- Ultra sensor #4 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <p>TODO: ultra wiring</p>
+            </section>
+
+            <!-- Ultra sensor #5 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <h3>ultra_sensor.h</h3>
+
+                <pre data-id="code"><code data-trim data-noescape
+                        data-line-numbers="1|3-4|6|8-10|12|15|17-18|20-22|24|26-27|29" class="hljs cpp">
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+                        #include "pin.h"
+
+                        class UltraSensor {
+
+                        &#9;static constexpr float METERS_PER_US = 0.0001715f;
+                        &#9;static constexpr float MIN_DIST = 0.02f;
+                        &#9;static constexpr float MAX_DIST = 4.0f;
+
+                        &#9;volatile uint64_t last_dist;
+
+                        public:
+                        &#9;volatile bool enabled;
+
+                        &#9;Pin trig;
+                        &#9;Pin echo;
+
+                        &#9;volatile uint64_t rise;
+                        &#9;volatile uint64_t fall;
+                        &#9;volatile uint64_t last_pulse;
+
+                        &#9;UltraSensor(uint _trig, uint _echo);
+
+                        &#9;void enable();
+                        &#9;void disable();
+
+                        &#9;float distance();
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- Ultra sensor #5 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <h3>ultra_sensor.cpp</h3>
+
+                <pre data-id="code"><code data-trim data-noescape
+                        data-line-numbers="1|3-4|5-9|12-20|22-30|32-46|34-35|36|38-39|42-43|45|" class="hljs cpp">
+                        #include "ultra_sensor.h"
+
+                        UltraSensor::UltraSensor(uint _trig, uint _echo)
+                        &#9;: trig(_trig), echo(_echo, GPIO_IN) {
+                        &#9;enabled = true;
+                        &#9;last_dist = 0;
+                        &#9;rise = 0;
+                        &#9;fall = 0;
+                        &#9;last_pulse = 0;
+                        }
+
+                        void UltraSensor::enable() {
+                        &#9;if (enabled)
+                        &#9;&#9;return;
+
+                        &#9;enabled = true;
+
+                        &#9;trig.enable();
+                        &#9;echo.enable();
+                        }
+
+                        void UltraSensor::disable() {
+                        &#9;if (!enabled)
+                        &#9;&#9;return;
+
+                        &#9;enabled = false;
+
+                        &#9;trig.disable();
+                        &#9;echo.disable();
+                        }
+
+                        float UltraSensor::distance() {
+
+                        &#9;float dist;
+                        &#9;if (rise &gt; fall) {
+                        &#9;&#9;dist = last_dist;
+                        &#9;} else {
+                        &#9;&#9;dist = (fall - rise) * METERS_PER_US;
+                        &#9;&#9;last_dist = dist;
+                        &#9;}
+
+                        &#9;if (dist &lt; MIN_DIST || dist &gt; MAX_DIST)
+                        &#9;&#9;return -1;
+
+                        &#9;return dist;
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- Ultra sensor #6 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!--     <ul> -->
+            <!--         <li class="fragment">kissé zajos... ki kéne simítani</li> -->
+            <!--         <li class="fragment">átlagoljuk</li> -->
+            <!--         <li class="fragment">de hogyan tároljuk a korábbiakat?</li> -->
+            <!--     </ul> -->
+            <!-- </section> -->
+            <!---->
+            <!-- Ultra sensor #7 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!--     <img src="res/02/buffer.svg" alt="buffer" data-id="buf"> -->
+            <!-- </section> -->
+            <!---->
+            <!-- Ultra sensor #8 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!--     <img src="res/02/ring_buffer.png" alt="ring buffer" data-id="buf"> -->
+            <!-- </section> -->
+            <!---->
+            <!-- Ultra sensor #7 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!---->
+            <!--     <pre data-id="code"><code data-trim data-noescape data-line-numbers="|14-16|18-21|37-45" -->
+            <!--             class="hljs python"> -->
+            <!--                     </code> -->
+            <!--     </pre> -->
+            <!-- </section> -->
+
+            <!-- <end> -->
+            <section>
+                <h2 style="font-family: monospace;">&lt;\&gt;</h2>
+            </section>
+        </div>
+    </div>
+
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="reveal.js/plugin/search/search.js"></script>
+    <script src="reveal.js/plugin/notes/notes.js"></script>
+    <script src="reveal.js/plugin/math/math.js"></script>
+    <script src="reveal.js/plugin/zoom/zoom.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            preloadIframes: true,
+            slideNumber: 'c/t',
+            plugins: [RevealMarkdown, RevealHighlight, RevealSearch, RevealNotes, RevealMath, RevealZoom],
+        });
+    </script>
+
+</body>
+
+</html>
