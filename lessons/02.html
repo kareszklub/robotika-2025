@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1. óra</title>
+    <title>2. óra</title>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
@@ -28,43 +28,14 @@
                 <h2>2025</h2>
             </section>
 
-            <!-- Servo -->
-            <section>
-                <h2>Servo</h2>
-                <p>TODO: servo wiring</p>
+            <!-- Pin #1 -->
+            <section data-auto-animate>
+                <h2>Pin</h2>
             </section>
 
-            <!-- Classes #1 -->
+            <!-- Pin #2 -->
             <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <ul>
-                    <li class="fragment">mi van ha több van ugyanabból a perifériából?</li>
-                    <li data-id="copy" class="fragment">másoljuk le a kódot...</li>
-                </ul>
-            </section>
-
-            <!-- Classes #2 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <ul>
-                    <li>mi van ha több van ugyanabból a perifériából?</li>
-                    <li data-id="copy" style="text-decoration: line-through;">másoljuk le a kódot...</li>
-                </ul>
-            </section>
-
-            <!-- Classes #3 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <ul>
-                    <li>mi van ha több van ugyanabból a perifériából?</li>
-                    <li>csoportosítsuk ki közös részeket</li>
-                </ul>
-            </section>
-
-            <!-- Classes #4 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <h3>pin.h</h3>
+                <h2>pin.h</h2>
                 <pre><code data-line-numbers="1|3|6-7|10|12-14|16|18-19|21|23|" class="hljs cpp" data-trim
                         data-noescape>
                         #pragma once
@@ -95,10 +66,9 @@
                     </code></pre>
             </section>
 
-            <!-- Classes #5 -->
+            <!-- Pin #3 -->
             <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <h3>pin.cpp</h3>
+                <h2>pin.cpp</h2>
                 <pre><code data-line-numbers="1-2|4-5|6|8-9|11-12|15|17|19-22|24-26|28-30|32-40|33|34|35-36|38|42-44|"
                         class="hljs cpp" data-trim data-noescape>
                         #include "pin.h"
@@ -149,10 +119,316 @@
                     </code></pre>
             </section>
 
+            <!-- Breadboard -->
+            <section>
+                <h2>Breadboard</h2>
+                <img src="static/02/breadboard.png" alt="breadboard">
+            </section>
+
+            <!-- Ohm's law #1 -->
+            <section data-auto-animate>
+                <h2>Rövid ⚡ kitérő</h2>
+            </section>
+
+            <!-- Ohm's law #2 -->
+            <section data-auto-animate>
+                <h2>Rövid ⚡ kitérő</h2>
+                <img src="static/02/ohms_law.jpg" alt="Ohm's law">
+            </section>
+
+            <!-- Ohm's law #3 -->
+            <section data-auto-animate>
+                <h2>Rövid ⚡ kitérő</h2>
+                <p>Ohm törvénye: $R = \frac{U}{I}$</p>
+                <img src="static/02/ohms_law.jpg" alt="Ohm's law">
+            </section>
+
+            <!-- RGB LED #1 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    led
+                </h2>
+                <img src="static/02/ca.png" alt="rgb led">
+            </section>
+
+            <!-- RGB LED #2 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    led
+                </h2>
+                <p>TODO: led wiring</p>
+            </section>
+
+            <!-- RGB LED #3 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>rgb_led.h</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
+                        TODO: ilyenem még nincs is, holnap megírom
+                    </code></pre>
+            </section>
+
+            <!-- RGB LED #4 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>rgb_led.cpp</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
+                        TODO: ilyenem még nincs is, holnap megírom
+                    </code></pre>
+            </section>
+
+            <!-- Servo #1 -->
+            <section>
+                <h2>Servo</h2>
+                <p>TODO: servo wiring</p>
+            </section>
+
+            <!-- Servo #2 -->
+            <section>
+                <h2>servo.h</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1|3-4|7-8|11|13|15-16|"
+                        class="hljs cpp">
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+                        #include "pwm.h"
+
+                        class Servo {
+                        &#9;PWM pwm;
+                        &#9;float min, mid, max;
+
+                        public:
+                        &#9;Servo(uint pin, float _min, float _mid, float _max);
+
+                        &#9;void duty(float d);
+
+                        &#9;void deg(float d);
+                        &#9;void rad(float r);
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- Servo #3 -->
+            <section>
+                <h2>servo.cpp</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1-3|5-11|13-23|25-28|30-33|"
+                        class="hljs cpp">
+                        #include "servo.h"
+                        #include &lt;algorithm&gt;
+                        #include &lt;cmath&gt;
+
+                        Servo::Servo(uint pin, float _min, float _mid, float _max) : pwm(PWM(pin)) {
+                        &#9;min = _min;
+                        &#9;mid = _mid;
+                        &#9;max = _max;
+
+                        &#9;pwm.freq(50);
+                        }
+
+                        void Servo::duty(float d) {
+                        &#9;d = 1 - std::clamp(d, 0.0f, 1.0f);
+
+                        &#9;float duty;
+                        &#9;if (d &leq; 0.5)
+                        &#9;duty = min + ((mid - min) * d * 2);
+                        &#9;else
+                        &#9;duty = mid + ((max - mid) * (d * 2 - 1));
+
+                        &#9;pwm.duty(duty);
+                        }
+
+                        void Servo::deg(float d) {
+                        &#9;d = (d + 90) / 180;
+                        &#9;duty(d);
+                        }
+
+                        void Servo::rad(float r) {
+                        &#9;r = (r + 0.5 * M_PI) / M_PI;
+                        &#9;duty(r);
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- Buzzer #1 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">Buzzer</h2>
+                <p>TODO: buzzer wiring</p>
+            </section>
+
+            <!-- Buzzer #2 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">Buzzer</h2>
+                <ul>
+                    <li class="fragment">hang ⇒ frekvencia, hangerő
+                        <ul>
+                            <li class="fragment">folytonos (vs mikrokontroller)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">folytonos jel "szimulálása"
+                        <ul>
+                            <li class="fragment">ötlet: gyorsan ki be kapcsoljuk (<b>P</b>ulse <b>W</b>idth
+                                <b>M</b>odulation)
+                                <ul>
+                                    <li class="fragment">frekvencia: adódik</li>
+                                    <li class="fragment">hangerő: mennyi ideig van bekapcsolva</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Buzzer #3 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">PWM</h2>
+                <img src="static/02/sine.svg" alt="sine">
+            </section>
+
+            <!-- Buzzer #4 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">PWM</h2>
+                <img src="static/02/sine.svg" alt="sine">
+                <img src="static/02/square.svg" alt="square">
+            </section>
+
+            <!-- PWM #1 -->
+            <section data-auto-animate>
+                <h2>PWM</h2>
+            </section>
+
+            <!-- PWM #2 -->
+            <section data-auto-animate>
+                <h2>pwm.h</h2>
+                <pre><code data-line-numbers="1|3-5|8-12|14|17-18|20|22|24-25|27|29|" class="hljs cpp" data-trim
+                        data-noescape>
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+                        #include "hardware/pwm.h"
+                        #include "pin.h"
+
+                        class PWM {
+                        &#9;uint pin;
+                        &#9;uint frequency;
+                        &#9;float duty_cycle;
+                        &#9;uint slice_num;
+                        &#9;uint channel_num;
+
+                        &#9;void calculate_values();
+
+                        public:
+                        &#9;static const uint CLOCK_SPEED = 150e6;
+                        &#9;static const uint CLKDIV = 100;
+
+                        &#9;PWM(uint _pin);
+
+                        &#9;~PWM();
+
+                        &#9;void enable();
+                        &#9;void disable();
+
+                        &#9;void freq(uint _frequency);
+
+                        &#9;void duty(float _duty_cycle);
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- PWM #3 -->
+            <section data-auto-animate>
+                <h2>pwm.cpp</h2>
+                <pre><code data-line-numbers="1-2|4-15|6|8|10|12|14|17-22|23|26-28|30-33|35-37|39-45|42|47-53|"
+                        class="hljs cpp" data-trim data-noescape>
+                        #include "pwm.h"
+                        #include &lt;algorithm&gt;
+
+                        void PWM::calculate_values() {
+
+                        &#9;pwm_set_clkdiv(slice_num, CLKDIV);
+
+                        &#9;uint wrap = (CLOCK_SPEED / CLKDIV / (float) frequency);
+
+                        &#9;uint level = duty_cycle * wrap;
+
+                        &#9;pwm_set_wrap(slice_num, wrap);
+
+                        &#9;pwm_set_chan_level(slice_num, channel_num, level);
+                        }
+
+                        PWM::PWM(uint _pin)
+                        &#9;: pin(_pin),
+                        &#9;frequency(0),
+                        &#9;duty_cycle(0),
+                        &#9;slice_num(pwm_gpio_to_slice_num(_pin)),
+                        &#9;channel_num(pwm_gpio_to_channel(_pin)) {
+                        &#9;enable();
+                        }
+
+                        PWM::~PWM() {
+                        &#9;disable();
+                        }
+
+                        void PWM::enable() {
+                        &#9;gpio_set_function(pin, GPIO_FUNC_PWM);
+                        &#9;pwm_set_enabled(slice_num, true);
+                        }
+
+                        void PWM::disable() {
+                        &#9;gpio_deinit(pin);
+                        }
+
+                        void PWM::freq(uint _frequency) {
+                        &#9;frequency = _frequency;
+
+                        &#9;frequency = std::clamp(frequency, CLOCK_SPEED / CLKDIV / 0xffff, CLOCK_SPEED / CLKDIV);
+
+                        &#9;calculate_values();
+                        }
+
+                        void PWM::duty(float _duty_cycle) {
+                        &#9;duty_cycle = _duty_cycle;
+
+                        &#9;duty_cycle = std::clamp(duty_cycle, 0.0f, 1.0f);
+
+                        &#9;calculate_values();
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- Buzzer #5 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">Buzzer</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="4|7|9-10|12|14|" class="hljs cpp">
+                        #include "pico/stdlib.h"
+                        #include "pwm.h"
+
+                        int main() {
+                        &#9;stdio_init_all();
+
+                        &#9;PWM buzzer(4);
+
+                        &#9;buzzer.duty(0.5);
+                        &#9;buzzer.freq(2000);
+
+                        &#9;sleep_ms(2000);
+
+                        &#9;buzzer.duty(0);
+                        }
+                    </code></pre>
+            </section>
+
             <!-- config.h #1 -->
             <section data-auto-animate data-auto-animate-id="cfg">
                 <h2>config.h</h2>
-                <p>Jó lenne ha a konfigurációt is ki lehetne csoportosítani...</p>
+                <p>jó lenne, ha a konfigurációt is ki lehetne csoportosítani...</p>
             </section>
 
             <!-- config.h #2 -->
@@ -236,172 +512,113 @@
             <section data-auto-animate>
                 <h2>H bridge</h2>
 
-                <p>TODO: H bridge input values table</p>
+                <table>
+                    <thead>
+                        <th>xIN1</th>
+                        <th>xIN2</th>
+                        <th>FUNCTION</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PWM</td>
+                            <td>0</td>
+                            <td>Forward</td>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>PWM</td>
+                            <td>Reverse</td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
 
             <!-- H bridge #4 -->
             <section data-auto-animate>
-                <h2>H bridge</h2>
-                <pre data-id="code"><code data-trim data-noescape data-line-numbers="" class="hljs cpp">
-
-                        TODO: add H bridge code when finalized
-                    </code>
-                </pre>
-            </section>
-
-            <!-- Ultra sensor #1 -->
-            <section data-auto-animate data-auto-animate-id="ultra">
-                <h2>Ultra sensor</h2>
-            </section>
-
-            <!-- Ultra sensor #2 -->
-            <section data-auto-animate data-auto-animate-id="ultra">
-                <h2>Ultra sensor</h2>
-                <img src="static/02/ultra_sensor_1.png" alt="ultra sensor 1">
-            </section>
-
-            <!-- Ultra sensor #3 -->
-            <section data-auto-animate data-auto-animate-id="ultra">
-                <h2>Ultra sensor</h2>
-                <img src="static/02/ultra_sensor_1.png" alt="ultra sensor 1">
-                <img src="static/02/ultra_sensor_2.png" alt="ultra sensor 2">
-            </section>
-
-            <!-- Ultra sensor #4 -->
-            <section data-auto-animate data-auto-animate-id="ultra">
-                <h2>Ultra sensor</h2>
-                <p>TODO: ultra wiring</p>
-            </section>
-
-            <!-- Ultra sensor #5 -->
-            <section data-auto-animate data-auto-animate-id="ultra">
-                <h2>Ultra sensor</h2>
-                <h3>ultra_sensor.h</h3>
-
+                <h2>h_bridge.h</h2>
                 <pre data-id="code"><code data-trim data-noescape
-                        data-line-numbers="1|3-4|6|8-10|12|15|17-18|20-22|24|26-27|29" class="hljs cpp">
+                        data-line-numbers="1|3-4|7-9|11-13|15-16|18-19|21|23-24|26|" class="hljs cpp">
                         #pragma once
 
                         #include "pico/stdlib.h"
-                        #include "pin.h"
+                        #include "pwm.h"
 
-                        class UltraSensor {
+                        class HBridge {
+                        &#9;Pin l1;
+                        &#9;Pin l2;
+                        &#9;PWM l_pwm;
 
-                        &#9;static constexpr float METERS_PER_US = 0.0001715f;
-                        &#9;static constexpr float MIN_DIST = 0.02f;
-                        &#9;static constexpr float MAX_DIST = 4.0f;
+                        &#9;Pin r1;
+                        &#9;Pin r2;
+                        &#9;PWM r_pwm;
 
-                        &#9;volatile uint64_t last_dist;
-
+                        &#9;float last_l_speed;
+                        &#9;float last_r_speed;
                         public:
-                        &#9;volatile bool enabled;
+                        &#9;float l_speed;
+                        &#9;float r_speed;
 
-                        &#9;Pin trig;
-                        &#9;Pin echo;
-
-                        &#9;volatile uint64_t rise;
-                        &#9;volatile uint64_t fall;
-                        &#9;volatile uint64_t last_pulse;
-
-                        &#9;UltraSensor(uint _trig, uint _echo);
+                        &#9;HBridge(uint _l1, uint _l2, uint l_pwm, uint _r1, uint _r2, uint r_pwm, uint pwm_freq);
 
                         &#9;void enable();
                         &#9;void disable();
 
-                        &#9;float distance();
+                        &#9;void drive(float l, float r);
                         };
 
-                    </code></pre>
+                    </code>
+                </pre>
             </section>
 
-            <!-- Ultra sensor #5 -->
-            <section data-auto-animate data-auto-animate-id="ultra">
-                <h2>Ultra sensor</h2>
-                <h3>ultra_sensor.cpp</h3>
-
+            <!-- H bridge #5 -->
+            <section data-auto-animate>
+                <h2>h_bridge.cpp</h2>
                 <pre data-id="code"><code data-trim data-noescape
-                        data-line-numbers="1|3-4|5-9|12-20|22-30|32-46|34-35|36|38-39|42-43|45|" class="hljs cpp">
-                        #include "ultra_sensor.h"
+                        data-line-numbers="1-2|4-5|7-11|13-14|16|19-21|23-27|29-39|30-31|33-35|37-39|" class="hljs cpp">
+                        #include "h_bridge.h"
+                        #include "pico/stdlib.h"
 
-                        UltraSensor::UltraSensor(uint _trig, uint _echo)
-                        &#9;: trig(_trig), echo(_echo, GPIO_IN) {
-                        &#9;enabled = true;
-                        &#9;last_dist = 0;
-                        &#9;rise = 0;
-                        &#9;fall = 0;
-                        &#9;last_pulse = 0;
+                        #include &lt;algorithm&gt;
+                        #include &lt;cmath&gt;
+
+                        HBridge::HBridge(uint _l1, uint _l2, uint _l_pwm,
+                        &#9;uint _r1, uint _r2, uint _r_pwm, uint pwm_freq)
+                        &#9;: l1(_l1), l2(_l2), l_pwm(_l_pwm),
+                        &#9;r1(_r1), r2(_r2), r_pwm(_r_pwm),
+                        &#9;last_l_speed(0), last_r_speed(0) {
+
+                        &#9;l_pwm.freq(pwm_freq);
+                        &#9;r_pwm.freq(pwm_freq);
+
+                        &#9;enable();
                         }
 
-                        void UltraSensor::enable() {
-                        &#9;if (enabled)
-                        &#9;&#9;return;
-
-                        &#9;enabled = true;
-
-                        &#9;trig.enable();
-                        &#9;echo.enable();
+                        void HBridge::enable() {
+                        &#9;drive(last_l_speed, last_r_speed);
                         }
 
-                        void UltraSensor::disable() {
-                        &#9;if (!enabled)
-                        &#9;&#9;return;
-
-                        &#9;enabled = false;
-
-                        &#9;trig.disable();
-                        &#9;echo.disable();
+                        void HBridge::disable() {
+                        &#9;last_l_speed = l_speed;
+                        &#9;last_r_speed = r_speed;
+                        &#9;drive(0, 0);
                         }
 
-                        float UltraSensor::distance() {
+                        void HBridge::drive(float l, float r) {
+                        &#9;l_speed = std::clamp(l, -1.0f, 1.0f);
+                        &#9;r_speed = std::clamp(r, -1.0f, 1.0f);
 
-                        &#9;float dist;
-                        &#9;if (rise &gt; fall) {
-                        &#9;&#9;dist = last_dist;
-                        &#9;} else {
-                        &#9;&#9;dist = (fall - rise) * METERS_PER_US;
-                        &#9;&#9;last_dist = dist;
-                        &#9;}
+                        &#9;l1.value(l_speed &lt; 0);
+                        &#9;l2.value(l_speed &gt; 0);
+                        &#9;l_pwm.duty(abs(l_speed));
 
-                        &#9;if (dist &lt; MIN_DIST || dist &gt; MAX_DIST)
-                        &#9;&#9;return -1;
-
-                        &#9;return dist;
+                        &#9;r1.value(r_speed &gt; 0);
+                        &#9;r2.value(r_speed &lt; 0);
+                        &#9;r_pwm.duty(abs(r_speed));
                         }
 
-                    </code></pre>
+                    </code>
+                </pre>
             </section>
-
-            <!-- Ultra sensor #6 -->
-            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
-            <!--     <h2>Ultra sensor</h2> -->
-            <!--     <ul> -->
-            <!--         <li class="fragment">kissé zajos... ki kéne simítani</li> -->
-            <!--         <li class="fragment">átlagoljuk</li> -->
-            <!--         <li class="fragment">de hogyan tároljuk a korábbiakat?</li> -->
-            <!--     </ul> -->
-            <!-- </section> -->
-            <!---->
-            <!-- Ultra sensor #7 -->
-            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
-            <!--     <h2>Ultra sensor</h2> -->
-            <!--     <img src="res/02/buffer.svg" alt="buffer" data-id="buf"> -->
-            <!-- </section> -->
-            <!---->
-            <!-- Ultra sensor #8 -->
-            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
-            <!--     <h2>Ultra sensor</h2> -->
-            <!--     <img src="res/02/ring_buffer.png" alt="ring buffer" data-id="buf"> -->
-            <!-- </section> -->
-            <!---->
-            <!-- Ultra sensor #7 -->
-            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
-            <!--     <h2>Ultra sensor</h2> -->
-            <!---->
-            <!--     <pre data-id="code"><code data-trim data-noescape data-line-numbers="|14-16|18-21|37-45" -->
-            <!--             class="hljs python"> -->
-            <!--                     </code> -->
-            <!--     </pre> -->
-            <!-- </section> -->
 
             <!-- <end> -->
             <section>

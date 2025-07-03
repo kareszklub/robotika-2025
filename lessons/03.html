@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. óra</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="reveal.js/dist/theme/black.css" />
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <link rel="stylesheet" href="res/scrollbar.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Title -->
+            <section>
+                <h1 class="r-fit-text">Robotika 3. óra</h1>
+                <h2>2025</h2>
+            </section>
+
+            <!-- Ultra sensor #1 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+            </section>
+
+            <!-- Ultra sensor #2 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <img src="static/03/ultra_sensor_1.png" alt="ultra sensor 1">
+            </section>
+
+            <!-- Ultra sensor #3 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <img src="static/03/ultra_sensor_1.png" alt="ultra sensor 1">
+                <img src="static/03/ultra_sensor_2.png" alt="ultra sensor 2">
+            </section>
+
+            <!-- Ultra sensor #4 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <p>TODO: ultra wiring</p>
+            </section>
+
+            <!-- Ultra sensor #5 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <h3>ultra_sensor.h</h3>
+
+                <pre data-id="code"><code data-trim data-noescape
+                        data-line-numbers="1|3-4|6|8-10|12|15|17-18|20-22|24|26-27|29" class="hljs cpp">
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+                        #include "pin.h"
+
+                        class UltraSensor {
+
+                        &#9;static constexpr float METERS_PER_US = 0.0001715f;
+                        &#9;static constexpr float MIN_DIST = 0.02f;
+                        &#9;static constexpr float MAX_DIST = 4.0f;
+
+                        &#9;volatile uint64_t last_dist;
+
+                        public:
+                        &#9;volatile bool enabled;
+
+                        &#9;Pin trig;
+                        &#9;Pin echo;
+
+                        &#9;volatile uint64_t rise;
+                        &#9;volatile uint64_t fall;
+                        &#9;volatile uint64_t last_pulse;
+
+                        &#9;UltraSensor(uint _trig, uint _echo);
+
+                        &#9;void enable();
+                        &#9;void disable();
+
+                        &#9;float distance();
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- Ultra sensor #5 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Ultra sensor</h2>
+                <h3>ultra_sensor.cpp</h3>
+
+                <pre data-id="code"><code data-trim data-noescape
+                        data-line-numbers="1|3-4|5-9|12-20|22-30|32-46|34-35|36|38-39|42-43|45|" class="hljs cpp">
+                        #include "ultra_sensor.h"
+
+                        UltraSensor::UltraSensor(uint _trig, uint _echo)
+                        &#9;: trig(_trig), echo(_echo, GPIO_IN) {
+                        &#9;enabled = true;
+                        &#9;last_dist = 0;
+                        &#9;rise = 0;
+                        &#9;fall = 0;
+                        &#9;last_pulse = 0;
+                        }
+
+                        void UltraSensor::enable() {
+                        &#9;if (enabled)
+                        &#9;&#9;return;
+
+                        &#9;enabled = true;
+
+                        &#9;trig.enable();
+                        &#9;echo.enable();
+                        }
+
+                        void UltraSensor::disable() {
+                        &#9;if (!enabled)
+                        &#9;&#9;return;
+
+                        &#9;enabled = false;
+
+                        &#9;trig.disable();
+                        &#9;echo.disable();
+                        }
+
+                        float UltraSensor::distance() {
+
+                        &#9;float dist;
+                        &#9;if (rise &gt; fall) {
+                        &#9;&#9;dist = last_dist;
+                        &#9;} else {
+                        &#9;&#9;dist = (fall - rise) * METERS_PER_US;
+                        &#9;&#9;last_dist = dist;
+                        &#9;}
+
+                        &#9;if (dist &lt; MIN_DIST || dist &gt; MAX_DIST)
+                        &#9;&#9;return -1;
+
+                        &#9;return dist;
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- Namespaces #1 -->
+            <section data-auto-animate>
+                <h2>Újabb programozási kitérő</h2>
+                <ul>
+                    <li class="fragment">az ultrahang szenzor interruptokkal működik, aminek muszáj statikusnak lennie
+                    </li>
+                    <li data-id="copy" class="fragment">hányjunk be mindent globális scope-ba...</li>
+                </ul>
+            </section>
+
+            <!-- Namespaces #2 -->
+            <section data-auto-animate>
+                <h2>Újabb programozási kitérő</h2>
+                <ul>
+                    <li>az ultrahang szenzor interruptokkal működik, aminek muszáj statikusnak lennie
+                    </li>
+                    <li data-id="copy" style="text-decoration: line-through;">hányjunk be mindent globális scope-ba...
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Namespaces #3 -->
+            <section data-auto-animate>
+                <h2>Újabb programozási kitérő</h2>
+                <ul>
+                    <li>az ultrahang szenzor interruptokkal működik, aminek muszáj statikusnak lennie
+                    </li>
+                    <li>
+                        készítsünk egy Bobot névteret
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Namespaces #4 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Bobot namespace</h2>
+                <h3>bobot.h</h3>
+
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
+                        #pragma once
+
+                        #include "config.h"
+                        #include "ultra_sensor.h"
+                        #include &lt;functional&gt;
+
+                        namespace Bobot {
+
+                        &#9;static volatile bool bobot_enabled = true;
+
+                        &#9;extern UltraSensor ultra;
+
+                        &#9;using GpioIrq = std::function&lt;void()&gt;;
+
+                        &#9;void init();
+
+                        &#9;void add_irq(uint gpio, bool is_fall, GpioIrq callback);
+
+                        &#9;static void gpio_irq(uint gpio, uint32_t event_mask);
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- Namespaces #5 -->
+            <section data-auto-animate data-auto-animate-id="ultra">
+                <h2>Bobot namespace</h2>
+                <h3>bobot.cpp</h3>
+
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
+                        #include "bobot.h"
+
+                        namespace Bobot {
+
+                        &#9;UltraSensor ultra(ULTRA_TRIG_PIN, ULTRA_ECHO_PIN);
+
+                        &#9;struct repeating_timer ultra_trig_up_timer;
+                        &#9;struct repeating_timer ultra_trig_down_timer;
+
+                        &#9;bool ultra_trig_up(__unused repeating_timer* t) {
+                        &#9;&#9;ultra.trig.value(1);
+                        &#9;&#9;ultra.last_pulse = time_us_64();
+                        &#9;&#9;return true;
+                        &#9;}
+
+                        &#9;bool ultra_trig_down(__unused repeating_timer* t) {
+                        &#9;&#9;ultra.trig.value(0);
+                        &#9;&#9;return true;
+                        &#9;}
+
+                        &#9;void init() {
+                        &#9;&#9;stdio_init_all();
+
+                        &#9;&#9;add_irq(ultra.echo.pin, false, [&]() { ultra.rise = time_us_64(); });
+                        &#9;&#9;add_irq(ultra.echo.pin, true, [&]() { ultra.fall = time_us_64(); });
+
+                        &#9;add_repeating_timer_ms(-60, &ultra_trig_up, NULL, &ultra_trig_up_timer);
+                        &#9;&#9;sleep_us(15);
+                        &#9;&#9;add_repeating_timer_ms(-60, &ultra_trig_down, NULL, &ultra_trig_down_timer);
+                        &#9;}
+
+                        &#9;static GpioIrq irqs[2][32] = { { 0 } };
+
+                        &#9;void add_irq(uint gpio, bool is_fall, GpioIrq callback) {
+                        &#9;&#9;irqs[is_fall][gpio] = callback;
+
+                        &#9;&#9;uint32_t event_mask = is_fall ? GPIO_IRQ_EDGE_FALL : GPIO_IRQ_EDGE_RISE;
+                        &#9;&#9;gpio_set_irq_enabled_with_callback(gpio, event_mask, true, &gpio_irq);
+                        &#9;}
+
+                        &#9;void gpio_irq(uint gpio, uint32_t event_mask) {
+
+                        &#9;&#9;bool is_fall = event_mask & GPIO_IRQ_EDGE_FALL;
+                        &#9;&#9;GpioIrq irq = irqs[is_fall][gpio];
+
+                        &#9;&#9;if (irq) irq();
+                        &#9;}
+                        }
+
+                    </code></pre>
+            </section>
+
+
+            <!-- Ultra sensor #6 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!--     <ul> -->
+            <!--         <li class="fragment">kissé zajos... ki kéne simítani</li> -->
+            <!--         <li class="fragment">átlagoljuk</li> -->
+            <!--         <li class="fragment">de hogyan tároljuk a korábbiakat?</li> -->
+            <!--     </ul> -->
+            <!-- </section> -->
+            <!---->
+            <!-- Ultra sensor #7 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!--     <img src="res/02/buffer.svg" alt="buffer" data-id="buf"> -->
+            <!-- </section> -->
+            <!---->
+            <!-- Ultra sensor #8 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!--     <img src="res/02/ring_buffer.png" alt="ring buffer" data-id="buf"> -->
+            <!-- </section> -->
+            <!---->
+            <!-- Ultra sensor #7 -->
+            <!-- <section data-auto-animate data-auto-animate-id="ultra"> -->
+            <!--     <h2>Ultra sensor</h2> -->
+            <!---->
+            <!--     <pre data-id="code"><code data-trim data-noescape data-line-numbers="|14-16|18-21|37-45" -->
+            <!--             class="hljs python"> -->
+            <!--                     </code> -->
+            <!--     </pre> -->
+            <!-- </section> -->
+
+
+            <!-- RGB sensor #1 -->
+            <section data-auto-animate>
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    sensor
+                </h2>
+            </section>
+
+            <!-- RGB sensor #2 -->
+            <section data-auto-animate>
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    sensor
+                </h2>
+                <p>TODO: rgb sensor wiring</p>
+            </section>
+
+            <!-- i2c #1 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h2>I²C</h2>
+            </section>
+
+            <!-- i2c #2 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h2>I²C</h2>
+                <img src="static/03/i2c.svg" alt="i2c">
+            </section>
+
+            <!-- i2c #3 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h2>I²C</h2>
+                <h3>i2c.h</h3>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp"
+                        data-line-numbers="1|3-5|8-10|13-14|16-17|19|21|">
+                        #pragma once
+
+                        #include "hardware/i2c.h"
+                        #include "pico/stdlib.h"
+                        #include &lt;string.h&gt;
+
+                        class I2C {
+                        &#9;uint sda_pin;
+                        &#9;uint scl_pin;
+                        &#9;uint i2c_index;
+
+                        public:
+                        &#9;I2C(uint _sda_pin, uint _scl_pin, uint i2c_index = i2c_get_index(i2c_default));
+                        &#9;~I2C();
+
+                        &#9;void enable();
+                        &#9;void disable();
+
+                        &#9;void read(uint8_t addr, uint8_t memaddr, uint8_t* buf, uint nbytes);
+
+                        &#9;void write(uint8_t addr, uint8_t memaddr, const uint8_t* buf, uint8_t nbytes);
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- i2c #4 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h2>I²C</h2>
+                <h3>i2c.cpp</h3>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp"
+                        data-line-numbers="1|3-4|5|8-10|13-14|16-19|22-26|28-33|29-30|32|35-40|36-37|39|">
+                        #include "i2c.h"
+
+                        I2C::I2C(uint _sda_pin, uint _scl_pin, uint _i2c_index)
+                        &#9;: sda_pin(_sda_pin), scl_pin(_scl_pin), i2c_index(_i2c_index) {
+                        &#9;enable();
+                        }
+
+                        I2C::~I2C() {
+                        &#9;disable();
+                        }
+
+                        void I2C::enable() {
+                        &#9;const uint I2C_FREQ = 100'000;
+                        &#9;i2c_init(i2c_get_instance(i2c_index), I2C_FREQ);
+
+                        &#9;gpio_set_function(sda_pin, GPIO_FUNC_I2C);
+                        &#9;gpio_set_function(scl_pin, GPIO_FUNC_I2C);
+                        &#9;gpio_pull_up(sda_pin);
+                        &#9;gpio_pull_up(scl_pin);
+                        }
+
+                        void I2C::disable() {
+                        &#9;i2c_deinit(i2c_get_instance(i2c_index));
+                        &#9;gpio_deinit(sda_pin);
+                        &#9;gpio_deinit(scl_pin);
+                        }
+
+                        void I2C::read(uint8_t addr, uint8_t memaddr, uint8_t* buf, uint nbytes) {
+                        &#9;const uint8_t membuf[1] = { memaddr };
+                        &#9;i2c_write_burst_blocking(i2c_get_instance(i2c_index), addr, membuf, 1);
+
+                        &#9;i2c_read_burst_blocking(i2c_get_instance(i2c_index), addr, buf, nbytes);
+                        }
+
+                        void I2C::write(uint8_t addr, uint8_t memaddr, const uint8_t* buf, uint8_t nbytes) {
+                        &#9;const uint8_t membuf[1] = { memaddr };
+                        &#9;i2c_write_burst_blocking(i2c_get_instance(i2c_index), addr, membuf, 1);
+
+                        &#9;i2c_write_burst_blocking(i2c_get_instance(i2c_index), addr, buf, nbytes);
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- <end> -->
+            <section>
+                <h2 style="font-family: monospace;">&lt;\&gt;</h2>
+            </section>
+        </div>
+    </div>
+
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="reveal.js/plugin/search/search.js"></script>
+    <script src="reveal.js/plugin/notes/notes.js"></script>
+    <script src="reveal.js/plugin/math/math.js"></script>
+    <script src="reveal.js/plugin/zoom/zoom.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            preloadIframes: true,
+            slideNumber: 'c/t',
+            plugins: [RevealMarkdown, RevealHighlight, RevealSearch, RevealNotes, RevealMath, RevealZoom],
+        });
+    </script>
+
+</body>
+
+</html>
