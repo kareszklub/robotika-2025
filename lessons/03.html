@@ -419,6 +419,32 @@
                     </code></pre>
             </section>
 
+            <!-- Proxy #1 -->
+            <section data-auto-animate data-auto-animate-id="proxy">
+                <h2>Proximity szenzor</h2>
+                <img src="static/03/proxy-wiring.svg" alt="proxy wiring">
+            </section>
+
+            <!-- Proxy #2 -->
+            <section data-auto-animate data-auto-animate-id="proxy">
+                <h2>Proximity szenzor</h2>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers="1-3|6|7|8-12|">
+                        #include &lt;pico/stdlib.h&gt;
+                        #include &lt;cstdio&gt;
+                        #include "pin.h"
+
+                        int main() {
+                        &#9;stdio_init_all();
+                        &#9;Pin proxy(3, GPIO_IN);
+                        &#9;while (true) {
+                        &#9;&#9;printf("%d\n", (int) proxy.value());
+                        &#9;&#9;sleep_ms(100);
+                        &#9;}
+                        }
+
+                    </code></pre>
+            </section>
+
             <!-- <end> -->
             <section>
                 <h2 style="font-family: monospace;">&lt;\&gt;</h2>
