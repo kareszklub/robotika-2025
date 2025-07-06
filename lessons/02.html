@@ -119,137 +119,27 @@
                     </code></pre>
             </section>
 
-            <!-- Breadboard -->
-            <section>
-                <h2>Breadboard</h2>
-                <img src="static/02/breadboard.png" alt="breadboard">
+            <!-- Proxy #1 -->
+            <section data-auto-animate data-auto-animate-id="proxy">
+                <h2>Proximity szenzor</h2>
+                <img src="static/02/proxy-wiring.svg" alt="proxy wiring">
             </section>
 
-            <!-- Ohm's law #1 -->
-            <section data-auto-animate>
-                <h2>Rövid ⚡ kitérő</h2>
-            </section>
+            <!-- Proxy #2 -->
+            <section data-auto-animate data-auto-animate-id="proxy">
+                <h2>Proximity szenzor</h2>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers="1-3|6|7|8-12|">
+                        #include &lt;pico/stdlib.h&gt;
+                        #include &lt;cstdio&gt;
+                        #include "pin.h"
 
-            <!-- Ohm's law #2 -->
-            <section data-auto-animate>
-                <h2>Rövid ⚡ kitérő</h2>
-                <img src="static/02/ohms_law.jpg" alt="Ohm's law">
-            </section>
-
-            <!-- Ohm's law #3 -->
-            <section data-auto-animate>
-                <h2>Rövid ⚡ kitérő</h2>
-                <p>Ohm törvénye: $R = \frac{U}{I}$</p>
-                <img src="static/02/ohms_law.jpg" alt="Ohm's law">
-            </section>
-
-            <!-- RGB LED #1 -->
-            <section data-auto-animate data-auto-animate-id="led">
-                <h2>
-                    <span style="color: red;">R</span>
-                    <span style="color: green;">G</span>
-                    <span style="color: blue;">B</span>
-                    led
-                </h2>
-                <img src="static/02/ca.png" alt="rgb led">
-            </section>
-
-            <!-- RGB LED #2 -->
-            <section data-auto-animate data-auto-animate-id="led">
-                <h2>
-                    <span style="color: red;">R</span>
-                    <span style="color: green;">G</span>
-                    <span style="color: blue;">B</span>
-                    led
-                </h2>
-                <p>TODO: led wiring</p>
-            </section>
-
-            <!-- RGB LED #3 -->
-            <section data-auto-animate data-auto-animate-id="led">
-                <h2>rgb_led.h</h2>
-                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
-                        TODO: ilyenem még nincs is, holnap megírom
-                    </code></pre>
-            </section>
-
-            <!-- RGB LED #4 -->
-            <section data-auto-animate data-auto-animate-id="led">
-                <h2>rgb_led.cpp</h2>
-                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
-                        TODO: ilyenem még nincs is, holnap megírom
-                    </code></pre>
-            </section>
-
-            <!-- Servo #1 -->
-            <section>
-                <h2>Servo</h2>
-                <img src="static/02/servo-wiring.svg" alt="servo wiring">
-            </section>
-
-            <!-- Servo #2 -->
-            <section>
-                <h2>servo.h</h2>
-                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1|3-4|7-8|11|13|15-16|"
-                        class="hljs cpp">
-                        #pragma once
-
-                        #include "pico/stdlib.h"
-                        #include "pwm.h"
-
-                        class Servo {
-                        &#9;PWM pwm;
-                        &#9;float min, mid, max;
-
-                        public:
-                        &#9;Servo(uint pin, float _min, float _mid, float _max);
-
-                        &#9;void duty(float d);
-
-                        &#9;void deg(float d);
-                        &#9;void rad(float r);
-                        };
-
-                    </code></pre>
-            </section>
-
-            <!-- Servo #3 -->
-            <section>
-                <h2>servo.cpp</h2>
-                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1-3|5-11|13-23|25-28|30-33|"
-                        class="hljs cpp">
-                        #include "servo.h"
-                        #include &lt;algorithm&gt;
-                        #include &lt;cmath&gt;
-
-                        Servo::Servo(uint pin, float _min, float _mid, float _max) : pwm(PWM(pin)) {
-                        &#9;min = _min;
-                        &#9;mid = _mid;
-                        &#9;max = _max;
-
-                        &#9;pwm.freq(50);
-                        }
-
-                        void Servo::duty(float d) {
-                        &#9;d = 1 - std::clamp(d, 0.0f, 1.0f);
-
-                        &#9;float duty;
-                        &#9;if (d &leq; 0.5)
-                        &#9;duty = min + ((mid - min) * d * 2);
-                        &#9;else
-                        &#9;duty = mid + ((max - mid) * (d * 2 - 1));
-
-                        &#9;pwm.duty(duty);
-                        }
-
-                        void Servo::deg(float d) {
-                        &#9;d = (d + 90) / 180;
-                        &#9;duty(d);
-                        }
-
-                        void Servo::rad(float r) {
-                        &#9;r = (r + 0.5 * M_PI) / M_PI;
-                        &#9;duty(r);
+                        int main() {
+                        &#9;stdio_init_all();
+                        &#9;Pin proxy(3, GPIO_IN);
+                        &#9;while (true) {
+                        &#9;&#9;printf("%d\n", (int) proxy.value());
+                        &#9;&#9;sleep_ms(100);
+                        &#9;}
                         }
 
                     </code></pre>
@@ -425,6 +315,175 @@
                     </code></pre>
             </section>
 
+            <!-- Breadboard -->
+            <section>
+                <h2>Breadboard</h2>
+                <img src="static/02/breadboard.png" alt="breadboard">
+            </section>
+
+            <!-- Ohm's law #1 -->
+            <section data-auto-animate>
+                <h2>Rövid ⚡ kitérő</h2>
+            </section>
+
+            <!-- Ohm's law #2 -->
+            <section data-auto-animate>
+                <h2>Rövid ⚡ kitérő</h2>
+                <img src="static/02/ohms_law.jpg" alt="Ohm's law">
+            </section>
+
+            <!-- Ohm's law #3 -->
+            <section data-auto-animate>
+                <h2>Rövid ⚡ kitérő</h2>
+                <p>Ohm törvénye: $R = \frac{U}{I}$</p>
+                <img src="static/02/ohms_law.jpg" alt="Ohm's law">
+            </section>
+
+            <!-- RGB LED #1 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    led
+                </h2>
+                <img src="static/02/ca.png" alt="rgb led">
+            </section>
+
+            <!-- RGB LED #2 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    led
+                </h2>
+                <p>TODO: led wiring</p>
+            </section>
+
+            <!-- RGB LED #3 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>rgb_led.h</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1|3|6-8|10|12|" class="hljs cpp">
+                        #pragma once
+
+                        #include "pwm.h"
+
+                        class RGBLed {
+                        &#9;PWM r;
+                        &#9;PWM g;
+                        &#9;PWM b;
+
+                        &#9;RGBLed(uint _r, uint _g, uint _b, uint freq);
+
+                        &#9;void set_color(float _r, float _g, float _b);
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- RGB LED #4 -->
+            <section data-auto-animate data-auto-animate-id="led">
+                <h2>rgb_led.cpp</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1-2|4-5|6-8|11-19|12-14|16-18|"
+                        class="hljs cpp">
+                        #include "rgb_led.h"
+                        #include "utils.h"
+
+                        RGBLed::RGBLed(uint _r, uint _g, uint _b, uint freq)
+                        &#9;: r(_r), g(_g), b(_b) {
+                        &#9;r.freq(freq);
+                        &#9;g.freq(freq);
+                        &#9;b.freq(freq);
+                        }
+
+                        void RGBLed::set_color(float _r, float _g, float _b) {
+                        &#9;_r = clamp(_r, 0.0f, 1.0f);
+                        &#9;_g = clamp(_r, 0.0f, 1.0f);
+                        &#9;_b = clamp(_r, 0.0f, 1.0f);
+
+                        &#9;r.duty(1.0f - _r);
+                        &#9;g.duty(1.0f - _g);
+                        &#9;b.duty(1.0f - _b);
+                        }
+
+                    </code></pre>
+            </section>
+
+            <!-- Servo #1 -->
+            <section>
+                <h2>Servo</h2>
+                <img src="static/02/servo-wiring.svg" alt="servo wiring">
+            </section>
+
+            <!-- Servo #2 -->
+            <section>
+                <h2>servo.h</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1|3-4|7-8|11|13|15-16|"
+                        class="hljs cpp">
+                        #pragma once
+
+                        #include "pico/stdlib.h"
+                        #include "pwm.h"
+
+                        class Servo {
+                        &#9;PWM pwm;
+                        &#9;float min, mid, max;
+
+                        public:
+                        &#9;Servo(uint pin, float _min, float _mid, float _max);
+
+                        &#9;void duty(float d);
+
+                        &#9;void deg(float d);
+                        &#9;void rad(float r);
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- Servo #3 -->
+            <section>
+                <h2>servo.cpp</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1-3|5-11|13-23|25-28|30-33|"
+                        class="hljs cpp">
+                        #include "servo.h"
+                        #include &lt;algorithm&gt;
+                        #include &lt;cmath&gt;
+
+                        Servo::Servo(uint pin, float _min, float _mid, float _max) : pwm(PWM(pin)) {
+                        &#9;min = _min;
+                        &#9;mid = _mid;
+                        &#9;max = _max;
+
+                        &#9;pwm.freq(50);
+                        }
+
+                        void Servo::duty(float d) {
+                        &#9;d = 1 - std::clamp(d, 0.0f, 1.0f);
+
+                        &#9;float duty;
+                        &#9;if (d &leq; 0.5)
+                        &#9;&#9;duty = min + ((mid - min) * d * 2);
+                        &#9;else
+                        &#9;&#9;duty = mid + ((max - mid) * (d * 2 - 1));
+
+                        &#9;pwm.duty(duty);
+                        }
+
+                        void Servo::deg(float d) {
+                        &#9;d = (d + 90) / 180;
+                        &#9;duty(d);
+                        }
+
+                        void Servo::rad(float r) {
+                        &#9;r = (r + 0.5 * M_PI) / M_PI;
+                        &#9;duty(r);
+                        }
+
+                    </code></pre>
+            </section>
+
             <!-- config.h #1 -->
             <section data-auto-animate data-auto-animate-id="cfg">
                 <h2>config.h</h2>
@@ -477,147 +536,6 @@
                         const uint ENC_RB = 9;
 
                     </code></pre>
-            </section>
-
-            <!-- Motorok -->
-            <section>
-                <h2>Motorok</h2>
-                <ul>
-                    <li class="fragment">áram ⇒ forgás
-                        <ul>
-                            <li class="fragment">fun fact: fordítva is működik</li>
-                        </ul>
-                    </li>
-                    <li class="fragment">a forgás iránya az áram irányától függ</li>
-                    <li class="fragment">de hogy adunk neki több áramot mint amit a pico tud?</li>
-                    <li class="fragment">és hogy cseréljük meg a kábeleket menet közben???</li>
-                </ul>
-            </section>
-
-            <!-- H bridge #1 -->
-            <section data-auto-animate>
-                <h2>H bridge</h2>
-
-                <img src="static/02/h_bridge.svg" alt="H bridge">
-            </section>
-
-            <!-- H bridge #2 -->
-            <section data-auto-animate>
-                <h2>H bridge</h2>
-
-                <img src="static/02/hbridge-wiring.svg" alt="hbridge wiring">
-            </section>
-
-            <!-- H bridge #3 -->
-            <section data-auto-animate>
-                <h2>H bridge</h2>
-
-                <table>
-                    <thead>
-                        <th>xIN1</th>
-                        <th>xIN2</th>
-                        <th>FUNCTION</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>PWM</td>
-                            <td>0</td>
-                            <td>Forward</td>
-                        </tr>
-                        <tr>
-                            <td>0</td>
-                            <td>PWM</td>
-                            <td>Reverse</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- H bridge #4 -->
-            <section data-auto-animate>
-                <h2>h_bridge.h</h2>
-                <pre data-id="code"><code data-trim data-noescape
-                        data-line-numbers="1|3-4|7-9|11-13|15-16|18-19|21|23-24|26|" class="hljs cpp">
-                        #pragma once
-
-                        #include "pico/stdlib.h"
-                        #include "pwm.h"
-
-                        class HBridge {
-                        &#9;Pin l1;
-                        &#9;Pin l2;
-                        &#9;PWM l_pwm;
-
-                        &#9;Pin r1;
-                        &#9;Pin r2;
-                        &#9;PWM r_pwm;
-
-                        &#9;float last_l_speed;
-                        &#9;float last_r_speed;
-                        public:
-                        &#9;float l_speed;
-                        &#9;float r_speed;
-
-                        &#9;HBridge(uint _l1, uint _l2, uint l_pwm, uint _r1, uint _r2, uint r_pwm, uint pwm_freq);
-
-                        &#9;void enable();
-                        &#9;void disable();
-
-                        &#9;void drive(float l, float r);
-                        };
-
-                    </code>
-                </pre>
-            </section>
-
-            <!-- H bridge #5 -->
-            <section data-auto-animate>
-                <h2>h_bridge.cpp</h2>
-                <pre data-id="code"><code data-trim data-noescape
-                        data-line-numbers="1-2|4-5|7-11|13-14|16|19-21|23-27|29-39|30-31|33-35|37-39|" class="hljs cpp">
-                        #include "h_bridge.h"
-                        #include "pico/stdlib.h"
-
-                        #include &lt;algorithm&gt;
-                        #include &lt;cmath&gt;
-
-                        HBridge::HBridge(uint _l1, uint _l2, uint _l_pwm,
-                        &#9;uint _r1, uint _r2, uint _r_pwm, uint pwm_freq)
-                        &#9;: l1(_l1), l2(_l2), l_pwm(_l_pwm),
-                        &#9;r1(_r1), r2(_r2), r_pwm(_r_pwm),
-                        &#9;last_l_speed(0), last_r_speed(0) {
-
-                        &#9;l_pwm.freq(pwm_freq);
-                        &#9;r_pwm.freq(pwm_freq);
-
-                        &#9;enable();
-                        }
-
-                        void HBridge::enable() {
-                        &#9;drive(last_l_speed, last_r_speed);
-                        }
-
-                        void HBridge::disable() {
-                        &#9;last_l_speed = l_speed;
-                        &#9;last_r_speed = r_speed;
-                        &#9;drive(0, 0);
-                        }
-
-                        void HBridge::drive(float l, float r) {
-                        &#9;l_speed = std::clamp(l, -1.0f, 1.0f);
-                        &#9;r_speed = std::clamp(r, -1.0f, 1.0f);
-
-                        &#9;l1.value(l_speed &lt; 0);
-                        &#9;l2.value(l_speed &gt; 0);
-                        &#9;l_pwm.duty(abs(l_speed));
-
-                        &#9;r1.value(r_speed &gt; 0);
-                        &#9;r2.value(r_speed &lt; 0);
-                        &#9;r_pwm.duty(abs(r_speed));
-                        }
-
-                    </code>
-                </pre>
             </section>
 
             <!-- <end> -->
