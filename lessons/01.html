@@ -107,7 +107,7 @@
                     <li data-id="wireless">vezeték nélküli
                         <ul>
                             <li>akkumulátor</li>
-                            <li>wifi</li>
+                            <li>wifi (W)</li>
                         </ul>
                     </li>
                 </ul>
@@ -135,15 +135,17 @@
             <!-- C++ setup -->
             <section>
                 <h2>C++ setup</h2>
-                <p>TODO: C++ setup</p>
+                <ul>
+                    <li>TODO: C++ setup</li>
+                </ul>
             </section>
 
             <!-- Hello world #1 -->
             <section data-auto-animate>
                 <h2 data-id="title">Hello World! 👋</h2>
 
-                <pre><code data-trim class="hljs cpp" data-noescape data-line-numbers="1-2|5|6-9|7|8|">
-                        #include &lt;stdio.h&gt;
+                <pre><code data-trim class="hljs cpp" data-noescape data-line-numbers>
+                        #include &lt;cstdio&gt;
                         #include "pico/stdlib.h"
 
                         int main() {
@@ -195,105 +197,85 @@
             <section data-auto-animate>
                 <h2 data-id="title">Hello World! 🤖</h2>
 
-                <pre data-id="code"><code data-trim data-noescape data-line-numbers="1-2|5|6|7-12|8-9|10-11|"
-                        class="hljs cpp">
-                        #include "pico/cyw43_arch.h"
-                        #include "pico/stdlib.h"
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
+                        #include "bobot.h"
 
                         int main() {
-                        &#9;stdio_init_all();
-                        &#9;cyw43_arch_init();
+                        &#9;Bobot::init();
                         &#9;while (true) {
-                        &#9;&#9;cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
-                        &#9;&#9;sleep_ms(500);
-                        &#9;&#9;cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+                        &#9;&#9;Bobot::led.toggle();
                         &#9;&#9;sleep_ms(500);
                         &#9;}
                         }
                     </code></pre>
-
-                <div class="fragment">
-                    <p>ez így nem túl kényelmes, viszont van megoldás</p>
-                </div>
             </section>
 
-            <!-- Classes #1 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
+            <!-- Breadboard -->
+            <section>
+                <h2>Breadboard</h2>
+                <img src="static/02/breadboard.png" alt="breadboard">
+            </section>
+
+            <!-- Buzzer #1 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">Buzzer</h2>
+                <img src="static/02/buzzer-wiring.svg" alt="buzzer wiring">
+            </section>
+
+            <!-- Buzzer #2 -->
+            <section data-auto-animate data-auto-animate-id="buzzer">
+                <h2 data-id="title">Buzzer</h2>
                 <ul>
-                    <li class="fragment">mi van ha több van ugyanabból a perifériából?</li>
-                    <li data-id="copy" class="fragment">másoljuk le a kódot...</li>
+                    <li class="fragment">hang ⇒ frekvencia, hangerő
+                        <ul>
+                            <li class="fragment">folytonos (vs mikrokontroller)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">folytonos jel "szimulálása"
+                        <ul>
+                            <li class="fragment">ötlet: gyorsan ki be kapcsoljuk (<b>P</b>ulse <b>W</b>idth
+                                <b>M</b>odulation)
+                                <ul>
+                                    <li class="fragment">frekvencia: adódik</li>
+                                    <li class="fragment">hangerő a feszültségtől függ</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
 
-            <!-- Classes #2 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <ul>
-                    <li>mi van ha több van ugyanabból a perifériából?</li>
-                    <li data-id="copy" style="text-decoration: line-through;">másoljuk le a kódot...</li>
-                </ul>
+            <!-- PWM #1 -->
+            <section data-auto-animate data-auto-animate-id="pwm">
+                <h2 data-id="title">PWM</h2>
+                <img src="static/02/sine.svg" alt="sine">
             </section>
 
-            <!-- Classes #3 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <ul>
-                    <li>mi van ha több van ugyanabból a perifériából?</li>
-                    <li>csoportosítsuk ki közös részeket</li>
-                </ul>
+            <!-- PWM #2 -->
+            <section data-auto-animate data-auto-animate-id="pwm">
+                <h2 data-id="title">PWM</h2>
+                <img src="static/02/sine.svg" alt="sine">
+                <img src="static/02/square.svg" alt="square">
             </section>
 
-            <!-- Classes #4 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <h3>onboard_led.h</h3>
-                <pre><code data-line-numbers="1|3|6-7|10-13|" class="hljs cpp" data-trim data-noescape>
-                        #pragma once
-
+            <!-- PWM #3 -->
+            <section data-auto-animate data-auto-animate-id="pwm">
+                <h2 data-id="title">Buzzer</h2>
+                <pre data-id="code"><code data-trim data-noescape data-line-numbers class="hljs cpp">
                         #include "pico/stdlib.h"
+                        #include "pwm.h"
 
-                        class OnboardLed {
-                        &#9;uint led_pin;
-                        &#9;bool value;
+                        int main() {
+                        &#9;stdio_init_all();
 
-                        public:
-                        &#9;OnboardLed();
-                        &#9;void on();
-                        &#9;void off();
-                        &#9;void toggle();
-                        };
+                        &#9;PWM buzzer(2);
+                        &#9;buzzer.duty(0.5);
+                        &#9;buzzer.freq(2000);
 
-                    </code></pre>
-            </section>
+                        &#9;sleep_ms(2000);
 
-            <!-- Classes #5 -->
-            <section data-auto-animate>
-                <h2>Programozási kitérő</h2>
-                <h3>onboard_led.cpp</h3>
-                <pre><code data-line-numbers="1-2|4-5|6|9-12|14-17|19-21|" class="hljs cpp" data-trim data-noescape>
-                        #include "onboard_led.h"
-                        #include "pico/cyw43_arch.h"
-
-                        OnboardLed::OnboardLed()
-                        &#9;: led_pin(CYW43_WL_GPIO_LED_PIN) {
-                        &#9;cyw43_arch_init();
+                        &#9;buzzer.duty(0);
                         }
-
-                        void OnboardLed::on() {
-                        &#9;value = 1;
-                        &#9;cyw43_arch_gpio_put(led_pin, 1);
-                        }
-
-                        void OnboardLed::off() {
-                        &#9;value = 0;
-                        &#9;cyw43_arch_gpio_put(led_pin, 0);
-                        }
-
-                        void OnboardLed::toggle() {
-                        &#9;value ? off() : on();
-                        }
-
                     </code></pre>
             </section>
 

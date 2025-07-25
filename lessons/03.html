@@ -28,80 +28,6 @@
                 <h2>2025</h2>
             </section>
 
-            <!-- Motorok -->
-            <section>
-                <h2>Motorok</h2>
-                <ul>
-                    <li class="fragment">áram ⇒ forgás
-                        <ul>
-                            <li class="fragment">fun fact: fordítva is működik</li>
-                        </ul>
-                    </li>
-                    <li class="fragment">a forgás iránya az áram irányától függ</li>
-                    <li class="fragment">de hogy adunk neki több áramot mint amit a pico tud?</li>
-                    <li class="fragment">és hogy cseréljük meg a kábeleket menet közben???</li>
-                </ul>
-            </section>
-
-            <!-- H bridge #1 -->
-            <section data-auto-animate>
-                <h2>H bridge</h2>
-
-                <img src="static/03/h_bridge.svg" alt="H bridge">
-            </section>
-
-            <!-- H bridge #2 -->
-            <section data-auto-animate>
-                <h2>H bridge</h2>
-
-                <img src="static/03/hbridge-wiring.svg" alt="hbridge wiring">
-            </section>
-
-            <!-- H bridge #3 -->
-            <section data-auto-animate>
-                <h2>H bridge</h2>
-
-                <table>
-                    <thead>
-                        <th>xIN1</th>
-                        <th>xIN2</th>
-                        <th>FUNCTION</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>PWM</td>
-                            <td>0</td>
-                            <td>Forward</td>
-                        </tr>
-                        <tr>
-                            <td>0</td>
-                            <td>PWM</td>
-                            <td>Reverse</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- H bridge #4 -->
-            <section data-auto-animate>
-                <h2>h_bridge.h</h2>
-                <pre data-id="code"><code data-trim data-noescape
-                        data-line-numbers="1|3-4|7-9|11-13|15-16|18-19|21|23-24|26|" class="hljs cpp">
-                        TODO: h_bridge.h
-                    </code>
-                </pre>
-            </section>
-
-            <!-- H bridge #5 -->
-            <section data-auto-animate>
-                <h2>h_bridge.cpp</h2>
-                <pre data-id="code"><code data-trim data-noescape
-                        data-line-numbers="1-2|4-5|7-11|13-14|16|19-21|23-27|29-39|30-31|33-35|37-39|" class="hljs cpp">
-                        TODO: h_bridge.cpp
-                    </code>
-                </pre>
-            </section>
-
             <!-- Ultra sensor #1 -->
             <section data-auto-animate data-auto-animate-id="ultra">
                 <h2>Ultra sensor</h2>
@@ -110,20 +36,20 @@
             <!-- Ultra sensor #2 -->
             <section data-auto-animate data-auto-animate-id="ultra">
                 <h2>Ultra sensor</h2>
-                <img src="static/03/ultra_sensor_1.png" alt="ultra sensor 1">
+                <img src="static/ultra_sensor_1.png" alt="ultra sensor 1">
             </section>
 
             <!-- Ultra sensor #3 -->
             <section data-auto-animate data-auto-animate-id="ultra">
                 <h2>Ultra sensor</h2>
-                <img src="static/03/ultra_sensor_1.png" alt="ultra sensor 1">
-                <img src="static/03/ultra_sensor_2.png" alt="ultra sensor 2">
+                <img src="static/ultra_sensor_1.png" alt="ultra sensor 1">
+                <img src="static/ultra_sensor_2.png" alt="ultra sensor 2">
             </section>
 
             <!-- Ultra sensor #4 -->
             <section data-auto-animate data-auto-animate-id="ultra">
                 <h2>Ultra sensor</h2>
-                <img src="static/03/ultra-wiring.svg" alt="ultra wiring">
+                <img src="static/ultra-wiring.svg" alt="ultra wiring">
             </section>
 
             <!-- Ultra sensor #5 -->
@@ -397,7 +323,7 @@
                     <span style="color: blue;">B</span>
                     sensor
                 </h2>
-                <img src="static/03/rgb-sensor-wiring.svg" alt="rgb sensor wiring">
+                <img src="static/rgb-sensor-wiring.svg" alt="rgb sensor wiring">
             </section>
 
             <!-- i2c #1 -->
@@ -408,7 +334,7 @@
             <!-- i2c #2 -->
             <section data-auto-animate data-auto-animate-id="i2c">
                 <h2>I²C</h2>
-                <img src="static/03/i2c.svg" alt="i2c">
+                <img src="static/i2c.svg" alt="i2c">
             </section>
 
             <!-- i2c #3 -->
@@ -507,6 +433,32 @@
                 <h3>rgb_sensor.cpp</h3>
                 <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers="">
                         TODO: rgb_sensor.cpp
+
+                    </code></pre>
+            </section>
+
+            <!-- Proxy #1 -->
+            <section data-auto-animate data-auto-animate-id="proxy">
+                <h2>Proximity szenzor</h2>
+                <img src="static/proxy-wiring.svg" alt="proxy wiring">
+            </section>
+
+            <!-- Proxy #2 -->
+            <section data-auto-animate data-auto-animate-id="proxy">
+                <h2>Proximity szenzor</h2>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
+                        #include &lt;cstdio&gt;
+                        #include "pico/stdlib.h"
+                        #include "pin.h"
+
+                        int main() {
+                        &#9;stdio_init_all();
+                        &#9;Pin proxy(3, GPIO_IN);
+                        &#9;while (true) {
+                        &#9;&#9;printf("%d\n", (int) proxy.value());
+                        &#9;&#9;sleep_ms(100);
+                        &#9;}
+                        }
 
                     </code></pre>
             </section>
