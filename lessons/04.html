@@ -28,44 +28,200 @@
                 <h2>2025</h2>
             </section>
 
-
-            <!-- Pause button #1 -->
-            <section data-auto-animate data-auto-animate-id="rst">
-                <h2>Pause button</h2>
-                <img src="static/button-wiring.svg" alt="button wiring">
+            <!-- RGB sensor #1 -->
+            <section data-auto-animate>
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    sensor
+                </h2>
             </section>
 
-            <!-- Pullup #1 -->
-            <section data-auto-animate data-auto-animate-id="pullup">
-                <h2>Újabb ⚡ kitérő</h2>
-                <img data-id="img" src="static/pull_up_1.svg" alt="no pull up">
+            <!-- RGB sensor #2 -->
+            <section data-auto-animate>
+                <h2>
+                    <span style="color: red;">R</span>
+                    <span style="color: green;">G</span>
+                    <span style="color: blue;">B</span>
+                    sensor
+                </h2>
+                <img src="static/rgb-sensor-wiring.svg" alt="rgb sensor wiring">
             </section>
 
-            <!-- Pullup #2 -->
-            <section data-auto-animate data-auto-animate-id="pullup">
-                <h2>Újabb ⚡ kitérő</h2>
-                <img data-id="img" src="static/pull_up_2.svg" alt="pull up">
+            <!-- i2c #1 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h2>I²C</h2>
             </section>
 
-            <!-- Pause button #2 -->
-            <section data-auto-animate data-auto-animate-id="rst">
-                <h2>Pause button</h2>
-                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers="1|5-11|15|">
-                        Pin button(BUTTON_PIN, GPIO_IN, true);
+            <!-- i2c #2 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h2>I²C</h2>
+                <img src="static/i2c.svg" alt="i2c">
+            </section>
 
-                        // ...
+            <!-- RGB sensor #3 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h3>rgb_sensor.h</h3>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers="">
+                        #pragma once
 
-                        void pause_callback() {
-                        &#9;uint64_t now = time_us_64();
-                        &#9;if (now - last_pause_us &geq; BUTTON_DEBOUNCE_INTERVAL_MS * 1000) {
-                        &#9;&#9;last_pause_us = now;
-                        &#9;&#9;toggle();
-                        &#9;}
+                        #include &lt;array&gt;
+                        #include "i2c.h"
+                        #include "pin.h"
+
+                        struct Color {
+                        &#9;uint16_t c;
+                        &#9;uint16_t r;
+                        &#9;uint16_t g;
+                        &#9;uint16_t b;
+                        };
+
+                        class RgbSensor {
+
+                        &#9;static const uint8_t DEFAULT_ADDRESS = 0x29;
+                        &#9;static const uint8_t CMD_BIT = 0x80;
+
+                        &#9;static const uint8_t REG_ENABLE = 0x00;
+                        &#9;static const uint8_t REG_CDATAL = 0x14;
+                        &#9;static const uint8_t REG_CONTROL = 0x0F;
+                        &#9;static const uint8_t REG_ATIME = 0x01;
+
+                        &#9;static const uint8_t PON = 0x01;
+                        &#9;static const uint8_t AEN = 0x02;
+
+                        &#9;uint8_t address;
+                        &#9;I2C i2c;
+
+                        &#9;volatile bool inited;
+
+                        &#9;uint integration_time;
+                        &#9;uint gain;
+
+                        &#9;void write8(uint8_t reg, uint8_t value);
+
+                        &#9;uint8_t read8(uint8_t reg);
+
+                        &#9;void write_bits(uint8_t reg, uint8_t value, uint8_t mask);
+
+                        &#9;std::array&lt;uint16_t, 4&gt; get_data();
+
+                        public:
+                        &#9;RgbSensor(uint sda_pin,
+                        &#9;&#9;&#9; uint scl_pin,
+                        &#9;&#9;&#9; uint i2c_address,
+                        &#9;&#9;&#9; uint led_pin,
+                        &#9;&#9;&#9; uint integration_time,
+                        &#9;&#9;&#9; uint gain,
+                        &#9;&#9;&#9; uint _address = DEFAULT_ADDRESS);
+
+                        &#9;Pin led;
+
+                        &#9;void init();
+                        &#9;void deinit();
+
+                        &#9;Color measure();
+
+                        &#9;void set_integration_time(uint _integration_time);
+
+                        &#9;void set_gain(uint _gain);
+                        };
+
+                    </code></pre>
+            </section>
+
+            <!-- RGB sensor #4 -->
+            <section data-auto-animate data-auto-animate-id="i2c">
+                <h3>rgb_sensor.cpp</h3>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers="">
+                        #include "rgb_sensor.h"
+                        #include &lt;cstring&gt;
+
+                        RgbSensor::RgbSensor(uint sda_pin,
+                        &#9;&#9;&#9;&#9;&#9; uint scl_pin,
+                        &#9;&#9;&#9;&#9;&#9; uint i2c_index,
+                        &#9;&#9;&#9;&#9;&#9; uint led_pin,
+                        &#9;&#9;&#9;&#9;&#9; uint _integration_time,
+                        &#9;&#9;&#9;&#9;&#9; uint _gain,
+                        &#9;&#9;&#9;&#9;&#9; uint _address)
+                        &#9;: address(_address),
+                        &#9; i2c(sda_pin, scl_pin, i2c_index),
+                        &#9; inited(false),
+                        &#9; integration_time(_integration_time),
+                        &#9; gain(_gain),
+                        &#9; led(led_pin) {}
+
+                        void RgbSensor::init() {
+                        &#9;if (inited)
+                        &#9;&#9;return;
+
+                        &#9;inited = true;
+
+                        &#9;i2c.init();
+                        &#9;led.init();
+
+                        &#9;write_bits(REG_ENABLE, PON, PON);
+                        &#9;sleep_ms(10);
+                        &#9;write_bits(REG_ENABLE, AEN, AEN);
+
+                        &#9;set_integration_time(integration_time);
+                        &#9;set_gain(gain);
                         }
 
-                        // ...
+                        void RgbSensor::deinit() {
 
-                        add_irq(button.pin, true, &amp;pause_callback);
+                        &#9;if (!inited)
+                        &#9;&#9;return;
+
+                        &#9;inited = false;
+
+                        &#9;i2c.deinit();
+                        &#9;led.deinit();
+                        }
+
+                        void RgbSensor::write8(uint8_t reg, uint8_t value) {
+                        &#9;uint8_t buf[1] = { value };
+                        &#9;i2c.write(address, CMD_BIT | reg, buf, 1);
+                        }
+
+                        uint8_t RgbSensor::read8(uint8_t reg) {
+                        &#9;uint8_t buf[1] = { 0 };
+                        &#9;i2c.read(address, CMD_BIT | reg, buf, 1);
+                        &#9;return buf[0];
+                        }
+
+                        void RgbSensor::write_bits(uint8_t reg, uint8_t value, uint8_t mask) {
+                        &#9;uint8_t old = read8(reg);
+                        &#9;uint8_t old_masked = old & ~mask;
+                        &#9;uint8_t new_value = old_masked | (value & mask);
+
+                        &#9;write8(reg, new_value);
+                        }
+
+                        std::array&lt;uint16_t, 4&gt; RgbSensor::get_data() {
+                        &#9;uint8_t color_bytes[4 * 2] = { 0 };
+                        &#9;i2c.read(address, CMD_BIT | REG_CDATAL, color_bytes, 4 * 2);
+
+                        &#9;std::array&lt;uint16_t, 4&gt; values;
+                        &#9;memcpy(values.data(), color_bytes, 4 * 2);
+
+                        &#9;return values;
+                        }
+
+                        Color RgbSensor::measure() {
+                        &#9;auto [c, r, g, b] = get_data();
+                        &#9;return { c, r, g, b };
+                        }
+
+                        void RgbSensor::set_integration_time(uint _integration_time) {
+                        &#9;integration_time = _integration_time;
+                        &#9;write8(REG_ATIME, 0xFF - integration_time);
+                        }
+
+                        void RgbSensor::set_gain(uint _gain) {
+                        &#9;gain = _gain;
+                        &#9;write_bits(REG_CONTROL, gain, 0b11);
+                        }
 
                     </code></pre>
             </section>
@@ -114,11 +270,17 @@
             <!-- PID #6 -->
             <section data-auto-animate data-auto-animate-id="pid">
                 <h2>PID</h2>
+                <p>Önálló munka: implementáció</p>
+            </section>
+
+            <!-- PID #6 -->
+            <section data-auto-animate data-auto-animate-id="pid">
+                <h2>PID</h2>
                 <h3>pid.h</h3>
                 <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
                         #pragma once
 
-                        #include &lt;stdint.h&gt;
+                        #include &lt;cstdint&gt;
 
                         class PID {
                         &#9;float K_p;
@@ -138,11 +300,12 @@
                         &#9;float I(float pv, int64_t dt);
                         &#9;float D(float pv, int64_t dt);
 
-                        &#9;public:
                         &#9;float sp;
 
-                        &#9;PID(float _sp, float _K_p, float _K_i, float _K_d,
-                        &#9;&#9;float _min_integral, float _max_integral);
+                        public:
+                        &#9;PID(float _K_p, float _K_i, float _K_d, float _min_integral, float _max_integral);
+
+                        &#9;void set_sp(float _sp);
 
                         &#9;float compute(float pv);
                         };
@@ -157,6 +320,7 @@
                 <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
                         #include "pid.h"
                         #include "pico/stdlib.h"
+                        #include "utils.h"
 
                         float PID::error(float pv) {
                         &#9;return sp - pv;
@@ -167,26 +331,35 @@
                         }
 
                         float PID::I(float pv, int64_t dt) {
-                        &#9;return K_i * (integral += error(pv) * dt);
+                        &#9;integral += K_i * error(pv) * dt;
+                        &#9;integral = clamp(integral, min_integral, max_integral);
+                        &#9;return integral;
                         }
 
                         float PID::D(float pv, int64_t dt) {
                         &#9;return K_d * ((error(pv) - last_error) / dt);
                         }
 
-                        PID::PID(float _sp, float _K_p, float _K_i, float _K_d,
-                        &#9;float _min_integral, float _max_integral)
+                        PID::PID(float _K_p, float _K_i, float _K_d, float _min_integral, float _max_integral)
                         &#9;: K_p(_K_p),
-                        &#9;K_i(_K_i),
-                        &#9;K_d(_K_d),
-                        &#9;last_error(0),
-                        &#9;last_compute_t(0),
-                        &#9;min_integral(_min_integral),
-                        &#9;max_integral(_max_integral),
-                        &#9;sp(_sp) {}
+                        &#9; K_i(_K_i),
+                        &#9; K_d(_K_d),
+                        &#9; last_error(0),
+                        &#9; last_compute_t(0),
+                        &#9; integral(0),
+                        &#9; min_integral(_min_integral),
+                        &#9; max_integral(_max_integral),
+                        &#9; sp(0) {}
+
+                        void PID::set_sp(float _sp) {
+                        &#9;last_error = 0;
+                        &#9;last_compute_t = 0;
+                        &#9;integral = 0;
+                        &#9;sp = _sp;
+                        }
 
                         float PID::compute(float pv) {
-                        &#9;int64_t now = time_us_64(), dt = now - last_compute_t;
+                        &#9;int64_t now = time_us_64() / 1000, dt = now - last_compute_t;
 
                         &#9;float result = P(pv) + I(pv, dt) + D(pv, dt);
 
@@ -195,6 +368,41 @@
 
                         &#9;return result;
                         }
+
+                    </code></pre>
+            </section>
+
+            <!-- Distancing #1 -->
+            <section data-auto-animate data-auto-animate-id="dist">
+                <h2>PID távolságtartás</h2>
+                <p>Önálló munka: implementáció</p>
+            </section>
+
+            <!-- Distancing #1 -->
+            <section data-auto-animate data-auto-animate-id="dist">
+                <h2>PID távolságtartás</h2>
+
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
+                        &#9;Bobot::init();
+
+                        &#9;PID pid(200, 0, 0, 0, 0);
+                        &#9;pid.set_sp(0.3f);
+
+                        &#9;while (true) {
+                        &#9;&#9;float d = Bobot::ultra.distance_smooth();
+
+                        &#9;&#9;float u;
+                        &#9;&#9;if (d &lt; 0) {
+                        &#9;&#9;&#9;u = 0;
+                        &#9;&#9;} else {
+                        &#9;&#9;&#9;u = -pid.compute(d);
+                        &#9;&#9;}
+
+                        &#9;&#9;Bobot::motor.drive(u, u);
+                        &#9;&#9;printf("%f %f\n", u, d);
+
+                        &#9;&#9;sleep_ms(60);
+                        &#9;}
 
                     </code></pre>
             </section>

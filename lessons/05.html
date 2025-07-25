@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. óra</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="reveal.js/dist/theme/black.css" />
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <link rel="stylesheet" href="res/scrollbar.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Title -->
+            <section>
+                <h1 class="r-fit-text">Robotika 5. óra</h1>
+                <h2>2025</h2>
+            </section>
+
+            <!-- Wallhug #1 -->
+            <section data-auto-animate data-auto-animate-id="wallhug">
+                <h2>Wallhugging</h2>
+            </section>
+
+            <!-- Wallhug #2 -->
+            <section data-auto-animate data-auto-animate-id="wallhug">
+                <h2>Wallhugging</h2>
+                <p>Feladat: maradjunk a mellettünk lévő faltól valamilyen távolságra, és közben haladjunk előre</p>
+            </section>
+
+            <!-- Wallhug #3 -->
+            <section data-auto-animate data-auto-animate-id="wallhug">
+                <h2>Wallhugging</h2>
+                <p>Megvalósítás: fordítsuk el a fejünket, és rakjunk PID-t a kanyarodásra</p>
+            </section>
+
+            <!-- Wallhug #4 -->
+            <section data-auto-animate data-auto-animate-id="wallhug">
+                <h2>Wallhugging</h2>
+                <p>Megvalósítás: fordítsuk el a fejünket, és rakjunk PID-t a kanyarodásra</p>
+                <p>Önálló munka!</p>
+            </section>
+
+            <!-- Wallhug #5 -->
+            <section data-auto-animate data-auto-animate-id="wallhug">
+                <h2>Wallhugging</h2>
+
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
+                        TODO: wallhugging code
+                    </code></pre>
+            </section>
+
+            <!-- Line following #1 -->
+            <section data-auto-animate data-auto-animate-id="line">
+                <h2>Vonalkövetés</h2>
+            </section>
+
+            <!-- Line following #2 -->
+            <section data-auto-animate data-auto-animate-id="line">
+                <h2>Vonalkövetés</h2>
+                <p>Feladat: Haladjunk végig egy lerajzolt vonal mentén</p>
+            </section>
+
+            <!-- Line following #3 -->
+            <section data-auto-animate data-auto-animate-id="line">
+                <h2>Vonalkövetés</h2>
+                <p>Feladat: Haladjunk végig egy lerajzolt vonal mentén</p>
+                <p>Most az elmélet is önálló munka lesz</p>
+            </section>
+
+            <!-- Line following #4 -->
+            <section data-auto-animate data-auto-animate-id="line">
+                <h2>Vonalkövetés</h2>
+                <h3>Hintek:</h3>
+                <ul>
+                    <li class="fragment">Érdemes végig a vonal egyik (pl. jobb) oldalán lenni</li>
+                    <li class="fragment">Próbáljunk meg a vonal szélén haladni, ezt hogyan lehet? <span
+                            class="fragment">✨ PID ✨</span></li>
+                    <li class="fragment">Mit kell csinálni, ha nem találjuk a vonalat?</li>
+                </ul>
+            </section>
+
+            <!-- Line following #5 -->
+            <section data-auto-animate data-auto-animate-id="line">
+                <h2>Vonalkövetés</h2>
+                <pre data-id="code"><code data-trim data-noescape class="hljs cpp" data-line-numbers>
+                        TODO: line following code
+                    </code></pre>
+            </section>
+
+            <!-- Obstacle course #1 -->
+            <section data-auto-animate data-auto-animate-id="map">
+                <h2>Akadálypálya</h2>
+            </section>
+
+            <!-- Obstacle course #2 -->
+            <section data-auto-animate data-auto-animate-id="map">
+                <h2>Akadálypálya</h2>
+                <img src="static/obstacle-course.webp" alt="obstacle course" width="500" height="500">
+            </section>
+
+            <!-- Obstacle course #3 -->
+            <section data-auto-animate data-auto-animate-id="map">
+                <h2>Akadálypálya</h2>
+                <p>TODO: befejezni ezt a részt</p>
+            </section>
+
+            <!-- <end> -->
+            <section>
+                <h2 style="font-family: monospace;">&lt;\&gt;</h2>
+            </section>
+        </div>
+    </div>
+
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="reveal.js/plugin/search/search.js"></script>
+    <script src="reveal.js/plugin/notes/notes.js"></script>
+    <script src="reveal.js/plugin/math/math.js"></script>
+    <script src="reveal.js/plugin/zoom/zoom.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            preloadIframes: true,
+            slideNumber: 'c/t',
+            plugins: [RevealMarkdown, RevealHighlight, RevealSearch, RevealNotes, RevealMath, RevealZoom],
+        });
+    </script>
+
+</body>
+
+</html>
